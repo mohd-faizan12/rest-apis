@@ -19,10 +19,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/registration',route);
-app.use((req, res, next) => {
-    res.status(200).json({
-        msg: "server has been started"
-    });
+app.get('', (req, res) => {
+    console.log("app is run successfully ");
 });
 
-module.exports=app;
+app.listen(8000, () => {
+    console.log("Server is listening on port number 8000");
+});
+
