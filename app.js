@@ -18,7 +18,7 @@ mongoose.connection.on('connected', connected => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/registration',route);
+app.use('/apis',route);
 app.get('', (req, res) => {
     console.log("app is run successfully ");
 });

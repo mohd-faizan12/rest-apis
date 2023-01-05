@@ -9,5 +9,14 @@ class Controller {
         });
         console.log("user registration Successfully");
 }
+async user_loginController(req, res) {
+    const Credential = req.body;
+    const result = await Services.user_login(Credential);
+    res.json(result);
+    console.log("user is successfully login !!")
+}
+
 };
+
+
 module.exports = new Controller;
