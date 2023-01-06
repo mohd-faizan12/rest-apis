@@ -1,4 +1,4 @@
-const Services = require("../services /userservices");
+const Services = require("../services/userservices");
 
 class Controller {
     async user_RegistrationController(req, res) {
@@ -15,7 +15,13 @@ async user_loginController(req, res) {
     res.json(result);
     console.log("user is successfully login !!")
 }
-
+async OTP_verification_service(req, res) {
+    const Credential = req.body;
+    const result = await Services.OTP_verification_service(Credential);
+    res.json(result);
+    console.log("Email verified")
+}
+ 
 };
 
 

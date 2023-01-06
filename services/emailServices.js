@@ -4,7 +4,7 @@ const mailer = require('nodemailer');
 const { createModulerLogger } = require('../utilities/logger');
 const { error } = require('console');
 const logger = createModulerLogger('emailservices');
-const Credential = require('./userservices')
+const AuthServices=require('./userservices')
 
 
 //---------------------------------------------------email- services---------------------------------------------------------------------------------------
@@ -19,20 +19,17 @@ const transport = mailer.createTransport({
 class EmailServices {
 
 //    static async sendTestMail(val,Credential) {
-    static async sendTestMail(val) {
+    static async sendTestMail(val,results) {
     
         try {
 
-            let Credential
-            const data = await renderFile(path.join(__dirname, '../Tem/test.html'), {val,Credential})
+            //let results
+            const data = await renderFile(path.join(__dirname, '../Tem/test.html'), {val,results})
             logger.info("sendTestMail 22", "email is successfully match")
-            console.log("gggggggggg",Credential,val);
-            AuthServices.user_registration(val,Credential);
-            console.log("hhhhhhhhhh",Credential,val);
+             console.log("hhhhhhhhhh",results,val);
 
             transport.sendMail({
-                //to: "vishal.mendiratta@uniblok.io",
-                to: Credential.username,
+                to: results,
                 from: 'mendiratta552@gmail.com',
                 subject: "User verification OTP",
                 html: data

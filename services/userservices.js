@@ -1,28 +1,37 @@
 const bcrypt = require('bcrypt');
+
 const authschema = require("../api/model/user");
 const response = require("../Exception-handeling/response");
 const user_auth = require('../api/model/user');
 const jwt = require("jsonwebtoken");
 const Jwtkey = require("../utilities/jwtutilis");
-const EmailServices=require("../services /emailServices")
+const EmailServices = require("./emailServices");
+const { loggers } = require('winston');
 
 
 
 class AuthServices {
     async User_registration(Credential) {
-        console.log("Credential",Credential)
+        console.log("Credential", Credential)
         try {
             Credential.password = bcrypt.hashSync(Credential.password, bcrypt.genSaltSync());
-            
-            // const result = await authschema.create(Credential);
+            // Credential.otp = bcrypt.hashSync(Credential.otp, bcrypt.genSaltSync());
 
-            console.log("Registration is successfully",Credential.username);
 
-          
-      
+            console.log("Registration is successfully done", Credential.username);
+
+            let results = Credential.username;
+            console.log("resuktsssssssssssss", results);
+
             var val = Math.floor(1000 + Math.random() * 9000);
-        
-            EmailServices.sendTestMail(val,Credential);
+
+            EmailServices.sendTestMail(val, results);
+          
+           const data= new authschema({otp:val,username:Credential.username,password:Credential.password})
+           await data.save();
+           console.log("data",data)
+          
+           
             return response.sendSuccess("user Registration is successfully Done !!");
 
         } catch (err) {
@@ -30,11 +39,40 @@ class AuthServices {
             console.log("Registration is not done let's try again later", err)
             return response.sendError("Registration is not done let's try again later", err);
 
-
-
         }
     }
 
+    async OTP_verification_service(bodypayload) {
+        console.log("bodypayload",bodypayload)
+        try {
+
+
+    
+            const data = await authschema.findOne({ username: bodypayload.username });
+            console.log("afffzzzan", data);
+            if (data) {
+                if (data.otp === bodypayload.otp) {
+                     console.log("your otp is successfully verify")
+                    return response.sendSuccess("your otp is successfully verified");
+
+                } else {
+
+                     console.log("oops!! your otp not verify")
+                    return response.sendError("oops!! your otp is not verify");
+                }
+
+            } else {
+                 console.log("username is not valid");
+                return response.sendError("username is not valid");
+            }
+
+
+
+        } catch (err) {
+            console.log("otp_verify", err)
+            return response.sendError("OTP mismatched", err);
+        }
+    }
     async user_login(Credential) {
         try {
 
@@ -66,3 +104,5 @@ class AuthServices {
 
 }
 module.exports = new AuthServices();
+// module.exports = { results: "results" }; 
+
