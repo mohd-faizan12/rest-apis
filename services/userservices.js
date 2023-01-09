@@ -51,12 +51,20 @@ class AuthServices {
                 if (bcrypt.compareSync(bodypayload.otp,data.otp)) {
                     //if (data.otp === bodypayload.otp) {
                     console.log("your otp is successfully verified")
+                    data.IsVerified=true
+                    await data.save()                  
+                    //let query = await authschema.findOneAndUpdate({})
+                    // const query = { username: bodypayload.username};
+                    // const update = { $set: {username: bodypayload.username, IsVerified:true }};
+                    // const options = {};
+                    // var dbo = db.user_auth("mydb");
+                    // user_auth.updateOne(query,update);
                     return response.sendSuccess("your otp is successfully verified");
 
                 } else {
 
-                    console.log("oops!! your otp not verify");
-                    return response.sendError("oops!! your otp is not verify");
+                    console.log("oops!! your otp is not verified");
+                    return response.sendError("oops!! your otp is not verified");
                 }
 
             } else {
@@ -75,11 +83,22 @@ class AuthServices {
         try {
 
 
-            const data = await user_auth.findOne({ username: Credential.username });
+            const data = await user_auth.findOne({ username: Credential.username});
             console.log("dataaaaa", data);
-            if (bcrypt.compareSync(Credential.password, data.password)) {
+            if (!data) {
+                console.log("User is not found")
+                return response.sendSuccess("User is not found");
+            }
+            else if(data.IsVerified === false){
+                console.log("please verify your account first")
+                return response.sendSuccess("Please verify your account first");
+
+
+            }
+            else if (bcrypt.compareSync(Credential.password, data.password)) {
                 const payload = {
                     username: data.username
+                
                 }
                 console.log("payload", payload);
 
@@ -90,9 +109,14 @@ class AuthServices {
                 console.log("token", token);
                 return { message: "Token is generated", token: token };
 
-            } else if (!data) {
-                console.log("User is not found")
-                return response.sendSuccess("User is not found");
+            // } else if (!data) {
+            //     console.log("User is not found")
+            //     return response.sendSuccess("User is not found");
+            }
+            else if(!bcrypt.compareSync(Credential.password, data.password)){
+                console.log("password not correct");
+                return response.sendSuccess("password not correct");
+
             }
         } catch (err) {
             console.log("login ", err)
