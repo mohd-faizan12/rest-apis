@@ -9,7 +9,7 @@ module.exports = {
             message: message,
             data: data,
             stauts: 200
-            
+
         });
 
     },

@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-
+//const otpcrypto = require('otp-crypto');
 const authschema = require("../api/model/user");
 const response = require("../Exception-handeling/response");
 const user_auth = require('../api/model/user');
@@ -22,16 +22,15 @@ class AuthServices {
 
             let results = Credential.username;
             console.log("resuktsssssssssssss", results);
+            let val = Math.floor(1000 + Math.random() * 9000);
+            //val = bcrypt.hashSync(val.toString(), bcrypt.genSaltSync());
+            EmailServices.sendTestMail(val, results); 
+            val = bcrypt.hashSync(val.toString(), bcrypt.genSaltSync());
+            const data = new authschema({ otp: val, username: Credential.username, password: Credential.password })
+            await data.save();
+            console.log("data", data);
 
-            var val = Math.floor(1000 + Math.random() * 9000);
 
-            EmailServices.sendTestMail(val, results);
-          
-           const data= new authschema({otp:val,username:Credential.username,password:Credential.password})
-           await data.save();
-           console.log("data",data)
-          
-           
             return response.sendSuccess("user Registration is successfully Done !!");
 
         } catch (err) {
@@ -43,33 +42,32 @@ class AuthServices {
     }
 
     async OTP_verification_service(bodypayload) {
-        console.log("bodypayload",bodypayload)
+        console.log("bodypayload", bodypayload)
         try {
 
-
-    
-            const data = await authschema.findOne({ username: bodypayload.username });
+            const data = await authschema.findOne({username:bodypayload.username});
             console.log("afffzzzan", data);
             if (data) {
-                if (data.otp === bodypayload.otp) {
-                     console.log("your otp is successfully verify")
+                if (bcrypt.compareSync(bodypayload.otp,data.otp)) {
+                    //if (data.otp === bodypayload.otp) {
+                    console.log("your otp is successfully verified")
                     return response.sendSuccess("your otp is successfully verified");
 
                 } else {
 
-                     console.log("oops!! your otp not verify")
+                    console.log("oops!! your otp not verify");
                     return response.sendError("oops!! your otp is not verify");
                 }
 
             } else {
-                 console.log("username is not valid");
+                console.log("username is not valid");
                 return response.sendError("username is not valid");
             }
 
 
 
         } catch (err) {
-            console.log("otp_verify", err)
+            console.log("otp_verify", err);
             return response.sendError("OTP mismatched", err);
         }
     }
@@ -83,13 +81,13 @@ class AuthServices {
                 const payload = {
                     username: data.username
                 }
-                console.log("payload", payload)
+                console.log("payload", payload);
 
                 const token = jwt.sign(payload, Jwtkey.Jwt_Key, {
                     algorithm: "HS256",
                     expiresIn: 24 * 60 * 60,
-                })
-                console.log("token", token)
+                });
+                console.log("token", token);
                 return { message: "Token is generated", token: token };
 
             } else if (!data) {

@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const route=require('./api/route/user');
-const bodyParser=require('body-parser');
+const route = require('./api/route/user');
+const bodyParser = require('body-parser');
 const app = express();
 
 mongoose.set('strictQuery', false);
@@ -18,7 +18,7 @@ mongoose.connection.on('connected', connected => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/apis',route);
+app.use('/apis', route);
 app.get('', (req, res) => {
     console.log("app is run successfully ");
 });

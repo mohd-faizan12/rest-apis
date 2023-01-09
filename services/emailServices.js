@@ -4,7 +4,7 @@ const mailer = require('nodemailer');
 const { createModulerLogger } = require('../utilities/logger');
 const { error } = require('console');
 const logger = createModulerLogger('emailservices');
-const AuthServices=require('./userservices')
+const AuthServices = require('./userservices')
 
 
 //---------------------------------------------------email- services---------------------------------------------------------------------------------------
@@ -18,15 +18,15 @@ const transport = mailer.createTransport({
 });
 class EmailServices {
 
-//    static async sendTestMail(val,Credential) {
-    static async sendTestMail(val,results) {
-    
+    //    static async sendTestMail(val,Credential) {
+    static async sendTestMail(val, results) {
+
         try {
 
             //let results
-            const data = await renderFile(path.join(__dirname, '../Tem/test.html'), {val,results})
+            const data = await renderFile(path.join(__dirname, '../Tem/test.html'), { val, results })
             logger.info("sendTestMail 22", "email is successfully match")
-             console.log("hhhhhhhhhh",results,val);
+            console.log("hhhhhhhhhh", results, val);
 
             transport.sendMail({
                 to: results,

@@ -4,14 +4,14 @@ const userSchema = new mongoose.Schema({
     //_id: mongoose.Schema.Types.ObjectId,
     username: String,
     password: String,
-    otp:Number,
+    otp:String,
     IsVerified:{
         type: Boolean,
         default: false 
     }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('userModel', userSchema);
 
 
 // const { Schema, model } = require("mongoose");
