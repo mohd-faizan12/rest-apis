@@ -7,6 +7,7 @@ const app = express();
 mongoose.set('strictQuery', false);
 
 mongoose.connect('mongodb+srv://faizan:faizan12@restfulapi.5frpfmo.mongodb.net/?retryWrites=true&w=majority');
+//mongoose.connect('mongodb+srv://cluster0.vfzatum.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority');
 
 mongoose.connection.on('error', error => {
     console.log("connection failed");
