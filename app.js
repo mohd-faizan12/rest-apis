@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const route = require('./api/route/user');
 const bodyParser = require('body-parser');
@@ -16,6 +17,7 @@ mongoose.connection.on('error', error => {
 mongoose.connection.on('connected', connected => {
     console.log('Connected to db');
 });
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
