@@ -26,7 +26,10 @@ class AuthServices {
             //val = bcrypt.hashSync(val.toString(), bcrypt.genSaltSync());
             EmailServices.sendTestMail(val, results);
             val = bcrypt.hashSync(val.toString(), bcrypt.genSaltSync());
-            const data = new authschema({ otp: val, username: Credential.username, password: Credential.password })
+            const data = new authschema({
+                FirstName: Credential.FirstName, LastName: Credential.LastName, otp: val, username: Credential.username,
+                password: Credential.password, ContactNumber: Credential.ContactNumber, purpose: Credential.purpose
+            })
             await data.save();
             console.log("data", data);
 
@@ -72,6 +75,7 @@ class AuthServices {
             return response.sendError("OTP mismatched", err);
         }
     }
+
     async user_login(Credential) {
         try {
 

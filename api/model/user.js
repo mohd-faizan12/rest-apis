@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     //_id: mongoose.Schema.Types.ObjectId,
+    FirstName:String,
+    LastName:String,
     username:{
      type:String,
      require:true,
@@ -12,7 +14,9 @@ const userSchema = new mongoose.Schema({
     IsVerified:{
         type: Boolean,
         default: false 
-    }
+    },
+    ContactNumber:Number,
+    purpose:String
 });
 
 module.exports = mongoose.model('user1', userSchema);
