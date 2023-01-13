@@ -18,7 +18,7 @@ module.exports = {
         return Object.assign({}, res, {
             message: message,
             data: data,
-            stauts: 400
+            stauts: 404
         });
     }
 }
