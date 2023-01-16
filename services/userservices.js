@@ -16,7 +16,7 @@ class AuthServices {
                 bcrypt.genSaltSync()
             );
 
-            console.log("Registration is successfully done", Credential.username);
+            console.log("otp sent succesfully", Credential.username);
             let results = Credential.username;
             console.log("resuktsssssssssssss", results);
             let val = Math.floor(1000 + Math.random() * 9000);
