@@ -1,4 +1,5 @@
 const Services = require("../services/userservices");
+const SuperAdminServices = require("../services/SuperAdminService");
 
 class Controller {
     async user_RegistrationController(req, res) {
@@ -20,6 +21,12 @@ class Controller {
         const result = await Services.OTP_verification_service(Credential);
         res.json(result);
         console.log("Email verified");
+    }
+    async SuperAdmin_loginController(req, res) {
+        const Credential = req.body;
+        const result = await SuperAdminServices.SuperAdmin_login(Credential);
+        res.json(result);
+        console.log("Super admin is successfully login !!")
     }
 
 };

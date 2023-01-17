@@ -20,7 +20,7 @@ class AuthServices {
             let results = Credential.username;
             console.log("resuktsssssssssssss", results);
             let val = Math.floor(1000 + Math.random() * 9000);
-            EmailServices.sendTestMail(val, results);
+           // EmailServices.sendTestMail(val, results);
             val = bcrypt.hashSync(val.toString(), bcrypt.genSaltSync());
             const data = new authschema({
                 FirstName: Credential.FirstName,
@@ -33,6 +33,8 @@ class AuthServices {
             });
             await data.save();
             console.log("data", data);
+            
+            EmailServices.sendTestMail(val, results);
 
             return response.sendSuccess("user Registration is successfully Done !!");
         } catch (err) {
