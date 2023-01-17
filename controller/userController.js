@@ -28,6 +28,12 @@ class Controller {
         res.json(result);
         console.log("Super admin is successfully login !!")
     }
+    async admin_addition(req, res) {
+        const Credential = req.body;
+        const result = await SuperAdminServices.admin_addition(Credential);
+        res.json(result);
+        console.log("admin is successfully created!");
+    }
 
 };
 

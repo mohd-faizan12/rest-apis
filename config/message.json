@@ -1,0 +1,20 @@
+
+{
+
+"101":"OTP sent to mail for registeration ",
+"102":"Registration is not done let's try again later",
+"103":"your otp is successfully verified",
+"104":"oops!! your otp is not verified",
+"105":"username is not valid",
+"106":"OTP mismatched",
+
+
+"107":"User is not found",
+"108":"please verify your account first",
+"109":"password not correct",
+"110":"Enter valid  login password",
+
+"201":"admin is successfully created"
+
+
+}
