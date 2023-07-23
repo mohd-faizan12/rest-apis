@@ -1,5 +1,6 @@
 const Services = require("../services/userservices");
 const SuperAdminServices = require("../services/SuperAdminService");
+const adminServices=require("../services/adminservices");
 
 class Controller {
     async user_RegistrationController(req, res) {
@@ -14,7 +15,8 @@ class Controller {
         const Credential = req.body;
         const result = await Services.user_login(Credential);
         res.json(result);
-        console.log("user is successfully login !!")
+        console.log("user is successfully login !!");
+        
     }
     async OTP_verification_service(req, res) {
         const Credential = req.body;
@@ -34,7 +36,12 @@ class Controller {
         res.json(result);
         console.log("admin is successfully created!");
     }
-
+    async update_password(req, res) {
+        const Credential = req.body;
+        const result = await adminServices.update_password(Credential);
+        res.json(result);
+        console.log("Password is changed..!!");
+    }
 };
 
 

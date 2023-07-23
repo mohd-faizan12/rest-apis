@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const authschema = require("../api/model/user");
 const response = require("../Exception-handeling/response");
-const user_auth = require("../api/model/user");
+const admin_auth = require("../api/model/adminmodel");
 const jwt = require("jsonwebtoken");
 const Jwtkey = require("../utilities/jwtutilis");
 const EmailServices = require("./emailServices");
@@ -12,7 +12,7 @@ class AdminServices {
    
     async user_login(Credential) {
         try {
-            const data = await user_auth.findOne({ username: Credential.username });
+            const data = await admin_auth.findOne({ username: Credential.username });
             console.log("dataaaaa", data);
             if (!data) {
                 //console.log("User is not found");
@@ -39,6 +39,37 @@ class AdminServices {
             return response.sendError(message["110"], err);
         }
     }
+    async update_password(Credential) {
+        try {
+            const data = await admin_auth.findOne({ Email:Credential.Email });
+            console.log("dataaaaa", data);
+            if (!data) {
+                return response.sendError(message["107"]);
+            } 
+            else if (bcrypt.compareSync(Credential.password, data.password)) {
+                const new_password = await bcrypt.hashSync(
+                    Credential.newPassword,
+                    bcrypt.genSaltSync()
+                );
+                const userData=await admin_auth.findByIdAndUpdate({_id:data._id},{$set:{
+                    password:new_password
+                }});
+                const payload = {
+                    username: data,
+                };
+                console.log("payload", payload);
+                
+                console.log("password has been changed successfully..!");
+                return { message: "password has been changed successfully..!" };
+            } else if (!bcrypt.compareSync(Credential.password, data.password)) {
+                return response.sendError(message["109"]);
+            }
+        } catch (err) {
+            console.log("password is not updated", err);
+            return response.sendError("password is not updated", err);
+        }
+    }
+
 }
 
 
